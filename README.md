@@ -110,4 +110,42 @@ Les algorithmes:
 
 - Dechiffrement :
 
+# Chiffrement asymétriques
+
+En commençant par la recherche de la clé utilisée, et sachant que celle-ci est dissimulée dans la page, nous avons décidé d'examiner le code source. En explorant le code source de la page, nous avons rapidement identifié un indice
   
+```html
+<DIV CLASS="body" ID="body">
+<!--
+<P>
+INDICE: le texte est chiffré en AES 256 CFB
+     la phrase de passe est
+la steganographie est l'art de la dissimulation...
+</P>
+-->
+<P>
+Déchiffrer ce qui suit pour obtenir la suite de l&#8217;énoncé.
+</P>
+
+<PRE>
+U2FsdGVkX18d93nIbpP7GUR1gP8wKwsWvwRzuFjR5Sj6Gq+q65okHROJZYcgU904
+BquXTwrCXEq+rlJADU9+lwltGqclq1i9tPc41G02hGSzQ5B6FqpVfZpBgOlm5sUb
+TIRA0gyzQPEtptFBOdlO+uQcfKXbWeMM5G8uFUpjspjyyQs8y08LDeGRblUS78Bg
+4OuugslCW7kBUz+oQJORKrHrf7aEI0LhsvzpKiN2m+95I+fJMdVcSu8vG/afhUlS
+```
+
+maintenant on procede vers decoder et dechiffrer le fichier :
+
+```cmd
+base64 -d open_suite.txt > decoded.txt
+openssl enc -d -pbkdf2 -aes-256-cfb -in decodec -out out
+cat out
+```
+
+![image](https://github.com/user-attachments/assets/2df68223-68e0-4ad5-9d21-b1db6c9aa14e)
+
+Après avoir déchiffré le contenu, il est évident qu'il s'agit d'une page HTML. Nous allons maintenant essayer d'accéder à cette page en l'ouvrant directement dans un navigateur
+
+![image](https://github.com/user-attachments/assets/7a9e433d-4007-40a0-8b10-2f4ce5a67d02)
+
+Après avoir réussi à localiser la continuité du TP, nous allons maintenant nous concentrer sur la résolution des prochaines étapes.
