@@ -191,4 +191,12 @@ apres on dechiffre :
 openssl pkeyutl -decrypt -inkey p_key.pem -in cyphered.txt -out decrypted.txt
 ```
 
+-------
 
+```cmd
+openssl pkeyutl -encrypt -pubin -inkey public.pem -in p_n.txt -out ciphered1.txt
+```
+
+![image](https://github.com/user-attachments/assets/1a9b3318-3a95-4882-9b11-635b4b34f8c6)
+
+Pour valider le chiffrement, il est nécessaire de disposer de la clé privée correspondant à la clé publique utilisée lors du processus de chiffrement. Toutefois, cette clé privée n'est pas disponible ici. En général, la vérification du chiffrement est effectuée par la personne qui possède la paire de clés (publique/privée), en déchiffrant les données chiffrées.
