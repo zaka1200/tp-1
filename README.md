@@ -32,3 +32,36 @@ Ces méthodes ne sont pas des moyens de sécuriser ou chiffrer des données, ell
 - **Hexadécimal** est utilisé pour afficher des données binaires dans un format lisible par les humains exemple des clés cryptographiques.
 - **Binaire** est utilisé au niveau des systèmes bas pour représenter toutes sortes de données, fichiers, etc. Toutes les données sont représentées en binaire au plus bas niveau des systèmes informatiques.
 - **Base64** Permet d’encoder des données dans des tokens d'authentification JSON Web Tokens (JWT), ou dans les certificats SSL, où la base64 permet d'inclure des données binaires dans des formats texte.
+  
+## Hachage
+
+Hachage du prénom et nom de famille en :
+
+- MD5
+  - code :
+  - ```cmd
+    cat cat p_n.txt | openssl dgst -md5 
+    ```
+  - resultat :
+  - ![image](https://github.com/user-attachments/assets/9e11bd33-ff88-4362-8885-a94f91c5944f)
+- SHA-1
+  - code :
+  - ```cmd
+    cat cat p_n.txt | openssl dgst -sha1
+    ```
+  - resultat :
+  - ![image](https://github.com/user-attachments/assets/31af847d-138c-4e08-ae51-c0e2b2242861)
+- SHA-256
+  - code :
+  - ```cmd
+    cat cat p_n.txt | openssl dgst -sha256
+    ```
+  - resultat :
+  - ![image](https://github.com/user-attachments/assets/c2c09c1d-549c-41f2-a58a-43cfb28a9b57)
+- RIPEMD-160
+  - code :
+  - ```cmd
+    cat cat p_n.txt | openssl dgst -ripemd160
+    ```
+  - resultat :
+  - ![image](https://github.com/user-attachments/assets/4f309830-3b3d-46a4-bfd4-783d1575ee4b)
