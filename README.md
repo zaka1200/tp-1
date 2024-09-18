@@ -200,3 +200,69 @@ openssl pkeyutl -encrypt -pubin -inkey public.pem -in p_n.txt -out ciphered1.txt
 ![image](https://github.com/user-attachments/assets/1a9b3318-3a95-4882-9b11-635b4b34f8c6)
 
 Pour valider le chiffrement, il est nécessaire de disposer de la clé privée correspondant à la clé publique utilisée lors du processus de chiffrement. Toutefois, cette clé privée n'est pas disponible ici. En général, la vérification du chiffrement est effectuée par la personne qui possède la paire de clés (publique/privée), en déchiffrant les données chiffrées.
+
+## Signature
+
+hachage du message m avec SHA-256 :
+
+```cmd
+cat message.txt| openssl dgst -sha256
+```
+
+Le hachage avec SHA-256 produit une empreinte unique de 256 bits. Ce résultat permet de vérifier l'intégrité du message.
+
+![image](https://github.com/user-attachments/assets/7d4d4d05-5d3d-49e9-8d35-7aa32a3b1e0c)
+
+Chiffrement du message avec une clé publique RSA :
+
+- on commence par enregistrer la clé publique dans un fichier :
+
+```cmd
+nano public_key.pem
+```
+
+![image](https://github.com/user-attachments/assets/87b4d677-91e7-4112-8705-d6b3b178b249)
+
+- apres on decode le msg :
+
+```cm
+cat message.txt | base64 -d > messaged.txt
+```
+
+- maintenant on chiffre le msg avec la cle publique RSA :
+
+```cmd
+openssl pkeyutl -encrypt -pubin -inkey public.pem -in messaged.txt -out ciphered_d.txt
+```
+
+L'affirmation du message M est correcte, mais elle doit préciser les limites de l'utilisation de RSA en termes de taille de message.
+
+## Vers l'Authentification
+
+1 - Le problème central du message M concerne la confiance dans l'authenticité de son contenu et de l'émetteur du message
+
+2 -  A quelle clef publique correspond-t-il ?
+
+```cmd
+openssl x509 -pubkey -noout -in cert
+```
+
+Cette commande affichera la clé publique du certificat cert
+
+![image](https://github.com/user-attachments/assets/2c9ab8ce-d2fb-4866-b34b-6fc1a1601533)
+
+3 - Qui est l'émetteur du certificat ?
+
+L'émetteur du certificat est indiqué dans le champ issuer. Dans ce cas, l'émetteur est :
+
+![image](https://github.com/user-attachments/assets/c33f2e40-e3c4-42ac-bb45-e4b682a624fb)
+
+Cela signifie que l'autorité de certification (CA) responsable de la délivrance de ce certificat est GEANT TCS 
+
+4 - Qu'est-ce que "GEANT Vereniging" ? Vous paraissent-ils de confiance ? Leur certificat vous parait-il de confiance ?
+
+GEANT Vereniging est une organisation européenne à but non lucratif qui fournit des services de réseau et de sécurité à la communauté académique et de recherche en Europe.
+
+![image](https://github.com/user-attachments/assets/2d23c415-5f55-42eb-867e-6652e8f4e5a2)
+
+Pour déterminer si nous pouvons faire confiance à 'GEANT Vereniging', nous devrions vérifier si cette autorité de certification (AC) est incluse dans notre liste des autorités de confiance.
