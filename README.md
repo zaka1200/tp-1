@@ -138,7 +138,7 @@ maintenant on procede vers decoder et dechiffrer le fichier :
 
 ```cmd
 base64 -d open_suite.txt > decoded.txt
-openssl enc -d -pbkdf2 -aes-256-cfb -in decodec -out out
+openssl enc -d -pbkdf2 -aes-256-cfb -in decoded -out out
 cat out
 ```
 
@@ -149,3 +149,46 @@ Après avoir déchiffré le contenu, il est évident qu'il s'agit d'une page HTM
 ![image](https://github.com/user-attachments/assets/7a9e433d-4007-40a0-8b10-2f4ce5a67d02)
 
 Après avoir réussi à localiser la continuité du TP, nous allons maintenant nous concentrer sur la résolution des prochaines étapes.
+
+## Clefs Publiques/Clefs Privées
+
+on cree notre propre couple clef publique / clef privee :
+
+```cmd
+openssl genrsa -aes256 -out p_key.pem
+```
+
+La phrase de passe est demandée pour protéger la clé privée. La sécurité de la clé privée dépend de la force de la phrase de passe. Une phrase de passe faible ou facilement devinable réduit considérablement la sécurité, car un attaquant pourrait la retrouver par des attaques par force brute ou dictionnaire.
+
+![image](https://github.com/user-attachments/assets/a2378ff5-6e50-49a7-ad6f-864de760a416)
+
+chiffrement du message suivant avec notre clef publique :
+
+```text
+En 2005, la cryptanalyste Xiaoyun Wang et ses co-auteurs Yiqun Lisa
+Yin et Hongbo Yu annoncent une attaque théorique pour la recherche de
+collisions pour SHA-1 qui est plus efficace que l'attaque des
+anniversaires (l'attaque générique de référence)11. L'attaque complète
+sera publiée à Crypto 201512. Le NIST pour sa part recommande de
+passer sur un algorithme SHA-2 ou SHA-3 quand c'est possible. Depuis
+2013, Microsoft a déclaré l’obsolescence du SHA-113 et en
+2014. L'ANSSI déconseille son utilisation dans la seconde version de
+son Référentiel Général de Sécurité (RGS)14 d'application au 1er
+juillet 2014.
+```
+
+```cmd
+openssl pkeyutl -encrypt -pubin -inkey pub_key.pem -in text.txt -out ciphered.txt
+```
+
+Nous avons rencontré une erreur en tentant de déchiffrer le message, car la taille du message dépassait la limite que la clé publique générée pouvait déchiffrer en une seule fois. Pour contourner cette limitation, nous avons décidé de diviser le message en plusieurs blocs
+
+![image](https://github.com/user-attachments/assets/f5e83a64-eaaa-4365-a33b-08ce6e10bf0e)
+
+apres on dechiffre :
+
+```cmd
+openssl pkeyutl -decrypt -inkey p_key.pem -in cyphered.txt -out decrypted.txt
+```
+
+
