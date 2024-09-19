@@ -103,12 +103,34 @@ Les algorithmes:
   ```cmd
   cat p_n_s.txt  | openssl enc -aes-192-cbc -k baba -iv ebaba | xxd -p
   cat p_n_s.txt  | openssl enc -aes-192-cbc -k baba -iv ebaba | base64
+  openssl enc -aes-192-cbc -K 62616261 -iv 6562616261 -in p_n_s.txt -out secret_aes192cbc.enc -base64
   ```
 - resultats :
 
   ![image](https://github.com/user-attachments/assets/ccc98c18-2edd-41da-914b-63702d44990f)
 
 - Dechiffrement :
+
+```cmd
+openssl enc -aes-192-cbc -d -K 62616261 -iv 6562616261 -in secret_aes192cbc.enc -base64
+```
+
+![image](https://github.com/user-attachments/assets/f230bf1b-7a4c-408b-bd68-4c0dffecbdb6)
+
+```cmd
+openssl enc -aes-256-ecb -pass pass:"TP Primitives Crypto" -in p_n_s.txt -out secret_aes256ecb.enc
+cat secret_aes256ecb.enc | base64
+cat secret_aes256ecb.enc | xxd -p
+```
+
+![image](https://github.com/user-attachments/assets/b95452b6-7f21-4c7f-8b21-20a19840135e)
+
+```cmd
+openssl enc -d -aes-256-ecb -pass pass:"TP Primitives Crypto" -in secret_aes256ecb.enc 
+```
+
+![image](https://github.com/user-attachments/assets/91bdcdeb-cc48-42d4-b515-97d36b7b3e1d)
+
 
 # Chiffrement asymétriques
 
