@@ -105,6 +105,7 @@ Les algorithmes:
   cat p_n_s.txt  | openssl enc -aes-192-cbc -k baba -iv ebaba | base64
   openssl enc -aes-192-cbc -K 62616261 -iv 6562616261 -in p_n_s.txt -out secret_aes192cbc.enc -base64
   ```
+  
 - resultats :
 
   ![image](https://github.com/user-attachments/assets/ccc98c18-2edd-41da-914b-63702d44990f)
@@ -117,13 +118,21 @@ openssl enc -aes-192-cbc -d -K 62616261 -iv 6562616261 -in secret_aes192cbc.enc 
 
 ![image](https://github.com/user-attachments/assets/f230bf1b-7a4c-408b-bd68-4c0dffecbdb6)
 
+### AES 256 en mode ECB par phrase de passe
+
+- commande :
+  
 ```cmd
 openssl enc -aes-256-ecb -pass pass:"TP Primitives Crypto" -in p_n_s.txt -out secret_aes256ecb.enc
 cat secret_aes256ecb.enc | base64
 cat secret_aes256ecb.enc | xxd -p
 ```
 
+- resultats :
+
 ![image](https://github.com/user-attachments/assets/b95452b6-7f21-4c7f-8b21-20a19840135e)
+
+- Dechiffrement :
 
 ```cmd
 openssl enc -d -aes-256-ecb -pass pass:"TP Primitives Crypto" -in secret_aes256ecb.enc 
@@ -131,6 +140,9 @@ openssl enc -d -aes-256-ecb -pass pass:"TP Primitives Crypto" -in secret_aes256e
 
 ![image](https://github.com/user-attachments/assets/91bdcdeb-cc48-42d4-b515-97d36b7b3e1d)
 
+### AES 256 en mode GCM
+
+Après la mise à jour d'OpenSSL, il a été constaté que le déchiffrement en ligne de commande utilisant AES-256-GCM ne fonctionne plus correctement. Ce problème survient en raison de modifications dans la gestion des algorithmes et des options dans les versions récentes d'OpenSSL. Pour résoudre ce problème, il est possible de revenir à une version antérieure d'OpenSSL
 
 # Chiffrement asymétriques
 
@@ -215,6 +227,26 @@ openssl pkeyutl -decrypt -inkey p_key.pem -in cyphered.txt -out decrypted.txt
 
 -------
 
+## Chiffrement
+
+Chiffrement du nom et prénom avec cette clé RSA :
+
+```rsa
+-----BEGIN PUBLIC KEY-----
+  MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEA4rhR/xbm5qX1d9lJCKXe
+  BEI85gX1oPqhAS2v3jvGjYktx8MhbvZmke7VNgsmZ1PUdcmnWIzcDeZS4OWYgO7i
+  PDz82CNDTH98H+ELk/csLXNGJDpj636ZKyJhub+u/YTfdzSkHKiZ5IRM5xbzeXcG
+  rBJGV2f0j36UrK49AGvakM/jPGQXAq1BbEZiGzCuy+d05ZG5Edb83G+zAgiNH6k1
+  Vnwc2y+Cp8+WxI0Xxj7LodGF3pOI9xWLvIjetg3RpKHbGdqIGOTxtGjMpgtPo30r
+  KBJk9aohEhD0RNs2gc8qXpo8fBbScWcYlxV/p38W1/YhymBebtf6EB736DVquFOh
+  hOZPmWX8HbmqFO95M1y/HiVeE7Jav46cPMRysZHAX0KqWfTjeIVI3ZNTDLkFzSDj
+  is0oH4mhemW/GX3qidMvHZ5/YcCQR+palo+zQGw5JkV7Y2oEM/cwaD/XM0R5yY8O
+  fr0UCmVHwp3+wFuHb0Z5h8Fc/2+rB5c9oAzh4F246ffnAgMBAAE=
+-----END PUBLIC KEY-----
+```
+
+- commande :
+
 ```cmd
 openssl pkeyutl -encrypt -pubin -inkey public.pem -in p_n.txt -out ciphered1.txt
 ```
@@ -288,3 +320,5 @@ GEANT Vereniging est une organisation européenne à but non lucratif qui fourni
 ![image](https://github.com/user-attachments/assets/2d23c415-5f55-42eb-867e-6652e8f4e5a2)
 
 Pour déterminer si nous pouvons faire confiance à 'GEANT Vereniging', nous devrions vérifier si cette autorité de certification (AC) est incluse dans notre liste des autorités de confiance.
+
+
